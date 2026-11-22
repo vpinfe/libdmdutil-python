@@ -20,7 +20,7 @@ jobs:
       matrix:
         include:
           - name: Linux x64
-            os: ubuntu-latest
+            os: ubuntu-24.04
             platform: linux
             arch: x64
             wrapper_lib: libdmdutil_python_bridge.so
@@ -92,6 +92,10 @@ jobs:
         env:
           PLATFORM: ${{ matrix.platform }}
           ARCH: ${{ matrix.arch }}
+
+      - name: Check the glibc the libraries need (Linux)
+        if: matrix.platform == 'linux'
+        run: python3 .github/scripts/max_glibc.py dist/libdmdutil-python --limit 2.38
 
       - name: Prepare upload directory
         shell: bash
